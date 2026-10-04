@@ -59,6 +59,15 @@ The project also includes fictional employee seed data so the application can be
 
 Screenshots of the application interface will be added here.
 
+<img width="955" height="472" alt="image" src="https://github.com/user-attachments/assets/5bb80d79-4ef2-491b-b90c-443f21343452" />
+<img width="945" height="462" alt="image" src="https://github.com/user-attachments/assets/252edee1-2acf-4732-b919-bd343e454c0e" />
+<img width="956" height="476" alt="image" src="https://github.com/user-attachments/assets/2d6072e0-3864-40a9-9a50-38598c9fb807" />
+<img width="945" height="479" alt="image" src="https://github.com/user-attachments/assets/c3a57dfa-a439-4bab-87e4-44ffb02565aa" />
+<img width="959" height="432" alt="image" src="https://github.com/user-attachments/assets/b36b1f3e-2ce3-46a4-88c7-af9039d5b683" />
+
+
+
+
 ## Getting Started
 
 ### Prerequisites
