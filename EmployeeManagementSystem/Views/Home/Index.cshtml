@@ -1,0 +1,378 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- ==========================================
+     PROFESSIONAL HOME HERO
+     ========================================== -->
+
+<section class="corporate-hero">
+
+    <div class="row align-items-center g-5">
+
+        <!-- LEFT SIDE -->
+        <div class="col-lg-6">
+
+            <div class="corporate-badge">
+                EMPLOYEE MANAGEMENT SYSTEM
+            </div>
+
+            <h1 class="corporate-title">
+                Your workforce.
+                <span>One organized place.</span>
+            </h1>
+
+            <p class="corporate-description">
+                EmployeeHub gives your organization a simple and professional
+                way to manage employee information, departments, positions,
+                salaries, and hiring records.
+            </p>
+
+            <div class="corporate-buttons">
+
+                <a asp-controller="Employees"
+                   asp-action="Index"
+                   class="btn btn-primary btn-lg">
+                    View Employees
+                    <span class="ms-2">→</span>
+                </a>
+
+                <a asp-controller="Employees"
+                   asp-action="Create"
+                   class="btn btn-outline-dark btn-lg">
+                    + Add Employee
+                </a>
+
+            </div>
+
+
+            <div class="corporate-trust">
+
+                <div class="trust-item">
+                    <span class="trust-check">✓</span>
+                    Employee Records
+                </div>
+
+                <div class="trust-item">
+                    <span class="trust-check">✓</span>
+                    Department Management
+                </div>
+
+                <div class="trust-item">
+                    <span class="trust-check">✓</span>
+                    Secure Database
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="col-lg-6">
+
+            <div class="office-dashboard">
+
+                <!-- TOP BAR -->
+                <div class="office-dashboard-header">
+
+                    <div>
+                        <span class="dashboard-label">
+                            EMPLOYEEHUB
+                        </span>
+
+                        <h3>Workforce Overview</h3>
+
+                        <p>
+                            Employee management dashboard
+                        </p>
+                    </div>
+
+                    <div class="dashboard-company-icon">
+                        🏢
+                    </div>
+
+                </div>
+
+
+                <!-- SUMMARY CARDS -->
+                <div class="dashboard-summary">
+
+                    <div class="summary-box">
+
+                        <div class="summary-icon">
+                            👥
+                        </div>
+
+                        <div>
+                            <span>Employees</span>
+                            <strong>Team Records</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <div class="summary-icon">
+                            🗂️
+                        </div>
+
+                        <div>
+                            <span>Departments</span>
+                            <strong>Organized Teams</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPLOYEE DIRECTORY -->
+                <div class="directory-heading">
+
+                    <div>
+                        <h4>Employee Directory</h4>
+                        <p>Recent team members</p>
+                    </div>
+
+                    <a asp-controller="Employees"
+                       asp-action="Index">
+                        View all
+                    </a>
+
+                </div>
+
+
+                <!-- EMPLOYEE 1 -->
+                <div class="office-employee">
+
+                    <div class="office-avatar avatar-blue">
+                        JC
+                    </div>
+
+                    <div class="office-person-info">
+                        <strong>John Carter</strong>
+                        <span>Senior Software Developer</span>
+                    </div>
+
+                    <div class="office-department">
+                        Information Technology
+                    </div>
+
+                    <span class="office-status">
+                        Active
+                    </span>
+
+                </div>
+
+
+                <!-- EMPLOYEE 2 -->
+                <div class="office-employee">
+
+                    <div class="office-avatar avatar-purple">
+                        AM
+                    </div>
+
+                    <div class="office-person-info">
+                        <strong>Alex Morgan</strong>
+                        <span>Product Manager</span>
+                    </div>
+
+                    <div class="office-department">
+                        Product
+                    </div>
+
+                    <span class="office-status">
+                        Active
+                    </span>
+
+                </div>
+
+
+                <!-- EMPLOYEE 3 -->
+                <div class="office-employee">
+
+                    <div class="office-avatar avatar-green">
+                        SJ
+                    </div>
+
+                    <div class="office-person-info">
+                        <strong>Sarah Johnson</strong>
+                        <span>HR Specialist</span>
+                    </div>
+
+                    <div class="office-department">
+                        Human Resources
+                    </div>
+
+                    <span class="office-status">
+                        Active
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     EMPLOYEEHUB FEATURES
+     ========================================== -->
+
+<section class="business-section">
+
+    <div class="business-heading">
+
+        <span>WORKFORCE MANAGEMENT</span>
+
+        <h2>
+            Everything you need to manage your employees
+        </h2>
+
+        <p>
+            Keep important employee information organized and accessible
+            through one professional management system.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- EMPLOYEE RECORDS -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="business-card">
+
+                <div class="business-card-icon">
+                    👤
+                </div>
+
+                <h3>Employee Records</h3>
+
+                <p>
+                    Maintain employee names, contact information,
+                    departments, positions, salaries and hire dates
+                    in one organized location.
+                </p>
+
+                <a asp-controller="Employees"
+                   asp-action="Index"
+                   class="business-link">
+                    View employees →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- MANAGEMENT -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="business-card">
+
+                <div class="business-card-icon">
+                    📋
+                </div>
+
+                <h3>Simple Management</h3>
+
+                <p>
+                    Create new employee records, update existing
+                    information, review employee details and remove
+                    outdated records.
+                </p>
+
+                <a asp-controller="Employees"
+                   asp-action="Create"
+                   class="business-link">
+                    Add employee →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="business-card">
+
+                <div class="business-card-icon">
+                    🔎
+                </div>
+
+                <h3>Employee Search</h3>
+
+                <p>
+                    Find employees quickly using their name,
+                    email address, department or position without
+                    searching through records manually.
+                </p>
+
+                <a asp-controller="Employees"
+                   asp-action="Index"
+                   class="business-link">
+                    Search directory →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     CALL TO ACTION
+     ========================================== -->
+
+<section class="employee-cta">
+
+    <div>
+
+        <span>EMPLOYEEHUB</span>
+
+        <h2>
+            Build and manage your workforce.
+        </h2>
+
+        <p>
+            Start organizing your employee records today.
+        </p>
+
+    </div>
+
+
+    <div class="employee-cta-buttons">
+
+        <a asp-controller="Employees"
+           asp-action="Create"
+           class="btn btn-light btn-lg">
+            + Add Employee
+        </a>
+
+        <a asp-controller="Employees"
+           asp-action="Index"
+           class="btn btn-outline-light btn-lg">
+            Employee Directory
+        </a>
+
+    </div>
+
+</section>

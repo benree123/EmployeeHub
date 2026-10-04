@@ -1,0 +1,89 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="mb-4">
+            <h1 class="fw-bold mb-1">Delete Employee</h1>
+            <p class="text-muted">
+                Review the employee information before deleting this record.
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="alert alert-danger">
+                    <strong>Are you sure?</strong>
+                    This action will permanently delete this employee record.
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <small class="text-muted">First Name</small>
+                        <p class="fw-semibold mb-0">@Model.FirstName</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <small class="text-muted">Last Name</small>
+                        <p class="fw-semibold mb-0">@Model.LastName</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <small class="text-muted">Email</small>
+                    <p class="fw-semibold mb-0">@Model.Email</p>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <small class="text-muted">Department</small>
+                        <p class="fw-semibold mb-0">@Model.Department</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <small class="text-muted">Position</small>
+                        <p class="fw-semibold mb-0">@Model.Position</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <small class="text-muted">Salary</small>
+                        <p class="fw-semibold mb-0">
+                            @Model.Salary.ToString("C")
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <small class="text-muted">Hire Date</small>
+                        <p class="fw-semibold mb-0">
+                            @Model.HireDate.ToString("MMMM dd, yyyy")
+                        </p>
+                    </div>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            Delete Employee
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
