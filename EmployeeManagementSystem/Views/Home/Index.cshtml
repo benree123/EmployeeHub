@@ -3,91 +3,95 @@
 @{
     ViewData["Title"] = "Overview";
     var signedIn = User.Identity?.IsAuthenticated == true;
-    var largest = Math.Max(1, Model.Departments.Select(d => d.Employees).DefaultIfEmpty(0).Max());
+    var total = Math.Max(1, Model.EmployeeCount);
 }
 
-<section class="overview">
-    <div class="overview-intro">
-        <h1>Every employee record, in one place.</h1>
-        <p class="lead-text">Search your directory, keep details up to date, and control who can see salaries.</p>
-
-        <div class="button-row">
-            @if (Configuration.GetValue<bool>("Demo:Enabled") && !signedIn)
-            {
-                <form asp-controller="Account" asp-action="Demo" method="post">
-                    <button type="submit" class="button button-main">Try the demo</button>
-                </form>
-                <a class="button button-quiet" asp-controller="Account" asp-action="Login">Sign in</a>
-            }
-            else if (signedIn)
-            {
-                <a class="button button-main" asp-controller="Employees" asp-action="Index">Open the directory</a>
-                @if (User.CanEdit())
-                {
-                    <a class="button button-quiet" asp-controller="Employees" asp-action="Create">Add employee</a>
-                }
-            }
-            else
-            {
-                <a class="button button-main" asp-controller="Account" asp-action="Login">Sign in</a>
-            }
-        </div>
-
-        <ul class="feature-list">
-            <li><strong>Find anyone quickly.</strong> Search by name, email, department, or position, then sort the results.</li>
-            <li><strong>Keep records clean.</strong> Duplicate emails and future hire dates are stopped before they save.</li>
-            <li><strong>Limit access by role.</strong> Viewers can browse the directory, but only editors see salaries or change records.</li>
-        </ul>
+<div class="page-heading">
+    <div>
+        <h1>Employee records</h1>
+        <p class="muted">Search the directory, keep details up to date, and control who can see salaries.</p>
     </div>
+    <div class="button-row">
+        @if (Configuration.GetValue<bool>("Demo:Enabled") && !signedIn)
+        {
+            <form asp-controller="Account" asp-action="Demo" method="post">
+                <button type="submit" class="button button-main">Try the demo</button>
+            </form>
+            <a class="button button-quiet" asp-controller="Account" asp-action="Login">Sign in</a>
+        }
+        else if (signedIn)
+        {
+            <a class="button button-main" asp-controller="Employees" asp-action="Index">Open the directory</a>
+        }
+        else
+        {
+            <a class="button button-main" asp-controller="Account" asp-action="Login">Sign in</a>
+        }
+    </div>
+</div>
 
-    <aside class="workforce" aria-labelledby="workforce-title">
+<dl class="summary">
+    <div><dt>Employees</dt><dd><strong>@Model.EmployeeCount</strong></dd></div>
+    <div><dt>Departments</dt><dd><strong>@Model.DepartmentCount</strong></dd></div>
+</dl>
+
+<div class="overview-grid">
+    <section aria-labelledby="workforce-title">
         <h2 id="workforce-title">Workforce by department</h2>
-        <dl class="totals">
-            <div><dt>Employees</dt><dd><strong>@Model.EmployeeCount</strong></dd></div>
-            <div><dt>Departments</dt><dd><strong>@Model.DepartmentCount</strong></dd></div>
-        </dl>
-
         @if (Model.Departments.Any())
         {
-            <ul class="department-bars">
-                @foreach (var department in Model.Departments)
-                {
-                    <li class="@DepartmentStyle.ClassFor(department.Name)">
-                        <span class="bar-label">@department.Name</span>
-                        <span class="bar-value">@department.Employees</span>
-                        <span class="bar-track" aria-hidden="true"><span style="width:@(department.Employees * 100 / largest)%"></span></span>
-                    </li>
-                }
-            </ul>
+            <div class="grid-wrap">
+                <table class="data-grid compact">
+                    <thead>
+                        <tr><th scope="col">Department</th><th scope="col" class="numeric">Employees</th><th scope="col" class="numeric">Share</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var department in Model.Departments)
+                        {
+                            <tr>
+                                <td data-label="Department">@department.Name</td>
+                                <td data-label="Employees" class="numeric">@department.Employees</td>
+                                <td data-label="Share" class="numeric">@(department.Employees * 100 / total)%</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {
             <p class="muted">No employee records yet.</p>
         }
+    </section>
 
-        <div class="recent">
-            <h3>Recently added</h3>
-            @if (Model.Recent.Any())
-            {
-                <ul>
-                    @foreach (var employee in Model.Recent)
-                    {
-                        <li class="@DepartmentStyle.ClassFor(employee.Department)">
-                            <span class="file-tab small" aria-hidden="true">@DepartmentStyle.Initials(employee)</span>
-                            <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">@employee.FirstName @employee.LastName</a>
-                            <span class="muted">@employee.Position</span>
-                        </li>
-                    }
-                </ul>
-            }
-            else if (signedIn)
-            {
-                <p class="muted">No employee records yet.</p>
-            }
-            else
-            {
-                <p class="muted">Sign in to see recent employee records.</p>
-            }
-        </div>
-    </aside>
-</section>
+    <section aria-labelledby="recent-title">
+        <h2 id="recent-title">Recently added</h2>
+        @if (Model.Recent.Any())
+        {
+            <div class="grid-wrap">
+                <table class="data-grid compact">
+                    <thead>
+                        <tr><th scope="col">Name</th><th scope="col">Position</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model.Recent)
+                        {
+                            <tr>
+                                <td data-label="Name"><a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">@employee.FirstName @employee.LastName</a></td>
+                                <td data-label="Position">@employee.Position</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (signedIn)
+        {
+            <p class="muted">No employee records yet.</p>
+        }
+        else
+        {
+            <p class="muted">Sign in to see recent employee records.</p>
+        }
+    </section>
+</div>

@@ -7,7 +7,7 @@
     <a class="back-link" asp-action="Details" asp-route-id="@Model.Id">Back to employee</a>
     <h1>Delete @Model.FirstName @Model.LastName?</h1>
     <p class="muted delete-note">This permanently removes the record and can't be undone.</p>
-    <partial name="_PersonnelFile" model="Model" />
+    <partial name="_EmployeeRecord" model="Model" />
 
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="Id" />

@@ -10,31 +10,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#12372f" />
+    <meta name="theme-color" content="#14304f" />
     <title>@ViewData["Title"] | EmployeeHub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="shell">
-        <header class="sidebar">
-            <div class="sidebar-top">
-                <a class="brand" asp-controller="Home" asp-action="Index">
-                    <span class="brand-mark" aria-hidden="true"></span>
-                    EmployeeHub
-                </a>
-                <button class="menu-button" type="button" data-bs-toggle="collapse" data-bs-target="#navigation"
-                        aria-controls="navigation" aria-expanded="false">
-                    Menu
-                </button>
-            </div>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" asp-controller="Home" asp-action="Index">EmployeeHub</a>
+            <button class="menu-button" type="button" data-bs-toggle="collapse" data-bs-target="#navigation"
+                    aria-controls="navigation" aria-expanded="false">
+                Menu
+            </button>
 
-            <div class="collapse sidebar-collapse" id="navigation">
+            <div class="collapse topbar-collapse" id="navigation">
                 <nav aria-label="Main">
                     <a class="nav-item" aria-current="@(onHome ? "page" : null)" asp-controller="Home" asp-action="Index">Overview</a>
                     <a class="nav-item" aria-current="@(onDirectory ? "page" : null)" asp-controller="Employees" asp-action="Index">Employees</a>
@@ -58,21 +53,19 @@
                     }
                 </div>
             </div>
-        </header>
-
-        <div class="workspace">
-            <main id="main" class="page">
-                @if (User.IsInRole(Roles.DemoGuest))
-                {
-                    <p class="demo-banner" role="status">
-                        <strong>Shared demo.</strong> Records are fictional and reset every 30 minutes, and other visitors can see your changes. Please don't enter real information.
-                    </p>
-                }
-
-                @RenderBody()
-            </main>
         </div>
-    </div>
+    </header>
+
+    <main id="main" class="page">
+        @if (User.IsInRole(Roles.DemoGuest))
+        {
+            <p class="demo-banner" role="status">
+                <strong>Shared demo.</strong> Records are fictional and reset every 30 minutes, and other visitors can see your changes. Please don't enter real information.
+            </p>
+        }
+
+        @RenderBody()
+    </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
