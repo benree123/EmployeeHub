@@ -152,7 +152,7 @@
                                 @if (canEdit)
                                 {
                                     <td class="salary-cell">
-                                        @item.Salary.ToString("C")
+                                        @item.Salary.ToString("$#,##0.00", System.Globalization.CultureInfo.InvariantCulture)
                                     </td>
                                 }
 

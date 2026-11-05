@@ -1,4 +1,4 @@
-﻿@model EmployeeManagementSystem.Models.Employee
+@model EmployeeManagementSystem.Models.Employee
 
 @{
     ViewData["Title"] = "Delete Employee";
@@ -55,7 +55,7 @@
                     <div class="col-md-6">
                         <small class="text-muted">Salary</small>
                         <p class="fw-semibold mb-0">
-                            @Model.Salary.ToString("C")
+                            @Model.Salary.ToString("$#,##0.00", System.Globalization.CultureInfo.InvariantCulture)
                         </p>
                     </div>
 

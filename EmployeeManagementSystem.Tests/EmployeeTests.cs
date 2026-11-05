@@ -170,6 +170,7 @@ public class EmployeeTests : IClassFixture<AppFactory>
         Assert.Contains("Page 1 of", first);
         Assert.Contains(">Next</a>", first);
         Assert.Equal(10, Regex.Matches(first, "class=\"salary-cell\"").Count);
+        Assert.Contains("$58,000.00", first);
         Assert.True(first.IndexOf("daniel.wilson@example.com") < first.IndexOf("rachel.lee@example.com"), "Lowest salary should be first.");
 
         var descending = await admin.GetStringAsync("/Employees?sort=salary&desc=true");
