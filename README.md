@@ -4,6 +4,8 @@ EmployeeHub is a full-stack Employee Management System built with ASP.NET Core M
 
 The application provides a clean and professional interface for managing employee records while demonstrating database integration, CRUD operations, search functionality, validation, and responsive web design.
 
+**[Try the live demo](https://employeehub-iuc7.onrender.com)** and select **Try the demo**. All records are fictional and reset regularly. The free host can take 50 seconds or more to wake up.
+
 ## Features
 
 - Add new employees
