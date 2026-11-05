@@ -1,0 +1,53 @@
+@model Employee
+
+<div asp-validation-summary="ModelOnly" class="form-error"></div>
+
+<fieldset>
+    <legend>Personal details</legend>
+    <div class="field-grid">
+        <div class="field-group">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="field" autocomplete="off" />
+            <span asp-validation-for="FirstName" class="field-error"></span>
+        </div>
+        <div class="field-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="field" autocomplete="off" />
+            <span asp-validation-for="LastName" class="field-error"></span>
+        </div>
+        <div class="field-group wide">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="field" autocomplete="off" />
+            <span asp-validation-for="Email" class="field-error"></span>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Role and pay</legend>
+    <div class="field-grid">
+        <div class="field-group">
+            <label asp-for="Department"></label>
+            <input asp-for="Department" class="field" />
+            <span asp-validation-for="Department" class="field-error"></span>
+        </div>
+        <div class="field-group">
+            <label asp-for="Position"></label>
+            <input asp-for="Position" class="field" />
+            <span asp-validation-for="Position" class="field-error"></span>
+        </div>
+        <div class="field-group">
+            <label asp-for="Salary"></label>
+            <div class="money-field">
+                <span aria-hidden="true">$</span>
+                <input asp-for="Salary" class="field" />
+            </div>
+            <span asp-validation-for="Salary" class="field-error"></span>
+        </div>
+        <div class="field-group">
+            <label asp-for="HireDate"></label>
+            <input asp-for="HireDate" class="field" />
+            <span asp-validation-for="HireDate" class="field-error"></span>
+        </div>
+    </div>
+</fieldset>

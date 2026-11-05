@@ -43,6 +43,7 @@ public class EmployeeTests : IClassFixture<AppFactory>
         Assert.DoesNotContain("john.carter", html);
         Assert.DoesNotContain("Rachel Lee", html);
         Assert.Contains("Sign in to see recent employee records", html);
+        Assert.Contains("Workforce by department", html);
 
         using var scope = _factory.Services.CreateScope();
         var count = await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Employees.CountAsync();

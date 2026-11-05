@@ -1,354 +1,93 @@
-@model EmployeeManagementSystem.Models.HomeViewModel
+@model HomeViewModel
 @inject IConfiguration Configuration
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Overview";
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    var largest = Math.Max(1, Model.Departments.Select(d => d.Employees).DefaultIfEmpty(0).Max());
 }
 
-<!-- ==========================================
-     PROFESSIONAL HOME HERO
-     ========================================== -->
+<section class="overview">
+    <div class="overview-intro">
+        <h1>Every employee record, in one place.</h1>
+        <p class="lead-text">Search your directory, keep details up to date, and control who can see salaries.</p>
 
-<section class="corporate-hero">
-
-    <div class="row align-items-center gx-0 gx-lg-5 gy-5">
-
-        <!-- LEFT SIDE -->
-        <div class="col-lg-6">
-
-            <div class="corporate-badge">
-                EMPLOYEE MANAGEMENT SYSTEM
-            </div>
-
-            <h1 class="corporate-title">
-                Your workforce.
-                <span>One organized place.</span>
-            </h1>
-
-            <p class="corporate-description">
-                EmployeeHub gives your organization a simple and professional
-                way to manage employee information, departments, positions,
-                salaries, and hiring records.
-            </p>
-
-            @if (Configuration.GetValue<bool>("Demo:Enabled") && User.Identity?.IsAuthenticated != true)
+        <div class="button-row">
+            @if (Configuration.GetValue<bool>("Demo:Enabled") && !signedIn)
             {
-                <form asp-controller="Account" asp-action="Demo" method="post" class="mb-3">
-                    <button type="submit" class="btn btn-success btn-lg">Try the demo</button>
-                    <small class="d-block text-muted mt-2">No password needed. All records are fictional.</small>
+                <form asp-controller="Account" asp-action="Demo" method="post">
+                    <button type="submit" class="button button-main">Try the demo</button>
                 </form>
+                <a class="button button-quiet" asp-controller="Account" asp-action="Login">Sign in</a>
             }
-
-            <div class="corporate-buttons">
-
-                <a asp-controller="Employees"
-                   asp-action="Index"
-                   class="btn btn-primary btn-lg">
-                    View Employees
-                    <span class="ms-2">→</span>
-                </a>
-
-                <a asp-controller="Employees"
-                   asp-action="Create"
-                   class="btn btn-outline-dark btn-lg">
-                    + Add Employee
-                </a>
-
-            </div>
-
-
-            <div class="corporate-trust">
-
-                <div class="trust-item">
-                    <span class="trust-check">✓</span>
-                    Employee Records
-                </div>
-
-                <div class="trust-item">
-                    <span class="trust-check">✓</span>
-                    Directory Search
-                </div>
-
-                <div class="trust-item">
-                    <span class="trust-check">✓</span>
-                    Role-Based Access
-                </div>
-
-            </div>
-
+            else if (signedIn)
+            {
+                <a class="button button-main" asp-controller="Employees" asp-action="Index">Open the directory</a>
+                @if (User.CanEdit())
+                {
+                    <a class="button button-quiet" asp-controller="Employees" asp-action="Create">Add employee</a>
+                }
+            }
+            else
+            {
+                <a class="button button-main" asp-controller="Account" asp-action="Login">Sign in</a>
+            }
         </div>
 
+        <ul class="feature-list">
+            <li><strong>Find anyone quickly.</strong> Search by name, email, department, or position, then sort the results.</li>
+            <li><strong>Keep records clean.</strong> Duplicate emails and future hire dates are stopped before they save.</li>
+            <li><strong>Limit access by role.</strong> Viewers can browse the directory, but only editors see salaries or change records.</li>
+        </ul>
+    </div>
 
-        <!-- RIGHT SIDE -->
-        <div class="col-lg-6">
+    <aside class="workforce" aria-labelledby="workforce-title">
+        <h2 id="workforce-title">Workforce by department</h2>
+        <dl class="totals">
+            <div><dt>Employees</dt><dd><strong>@Model.EmployeeCount</strong></dd></div>
+            <div><dt>Departments</dt><dd><strong>@Model.DepartmentCount</strong></dd></div>
+        </dl>
 
-            <div class="office-dashboard">
-
-                <!-- TOP BAR -->
-                <div class="office-dashboard-header">
-
-                    <div>
-                        <span class="dashboard-label">
-                            EMPLOYEEHUB
-                        </span>
-
-                        <h3>Workforce Overview</h3>
-
-                        <p>
-                            Employee management dashboard
-                        </p>
-                    </div>
-
-                    <div class="dashboard-company-icon">
-                        🏢
-                    </div>
-
-                </div>
-
-
-                <!-- SUMMARY CARDS -->
-                <div class="dashboard-summary">
-
-                    <div class="summary-box">
-
-                        <div class="summary-icon">
-                            👥
-                        </div>
-
-                        <div>
-                            <span>Employees</span>
-                            <strong>@Model.EmployeeCount</strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="summary-box">
-
-                        <div class="summary-icon">
-                            🗂️
-                        </div>
-
-                        <div>
-                            <span>Departments</span>
-                            <strong>@Model.DepartmentCount</strong>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- EMPLOYEE DIRECTORY -->
-                <div class="directory-heading">
-
-                    <div>
-                        <h4>Employee Directory</h4>
-                        <p>Most recently added</p>
-                    </div>
-
-                    <a asp-controller="Employees"
-                       asp-action="Index">
-                        View all
-                    </a>
-
-                </div>
-
-
-                @if (Model.Recent.Any())
+        @if (Model.Departments.Any())
+        {
+            <ul class="department-bars">
+                @foreach (var department in Model.Departments)
                 {
-                    var colors = new[] { "avatar-blue", "avatar-purple", "avatar-green" };
-                    var index = 0;
+                    <li class="@DepartmentStyle.ClassFor(department.Name)">
+                        <span class="bar-label">@department.Name</span>
+                        <span class="bar-value">@department.Employees</span>
+                        <span class="bar-track" aria-hidden="true"><span style="width:@(department.Employees * 100 / largest)%"></span></span>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="muted">No employee records yet.</p>
+        }
 
-                    foreach (var employee in Model.Recent)
+        <div class="recent">
+            <h3>Recently added</h3>
+            @if (Model.Recent.Any())
+            {
+                <ul>
+                    @foreach (var employee in Model.Recent)
                     {
-                        <div class="office-employee">
-
-                            <div class="office-avatar @colors[index++ % colors.Length]">
-                                @employee.FirstName.FirstOrDefault()@employee.LastName.FirstOrDefault()
-                            </div>
-
-                            <div class="office-person-info">
-                                <strong>@employee.FirstName @employee.LastName</strong>
-                                <span>@employee.Position</span>
-                            </div>
-
-                            <div class="office-department">
-                                @employee.Department
-                            </div>
-
-                        </div>
+                        <li class="@DepartmentStyle.ClassFor(employee.Department)">
+                            <span class="file-tab small" aria-hidden="true">@DepartmentStyle.Initials(employee)</span>
+                            <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">@employee.FirstName @employee.LastName</a>
+                            <span class="muted">@employee.Position</span>
+                        </li>
                     }
-                }
-                else if (User.Identity?.IsAuthenticated == true)
-                {
-                    <p class="text-muted mb-0">No employee records yet.</p>
-                }
-                else
-                {
-                    <p class="text-muted mb-0">Sign in to see recent employee records.</p>
-                }
-
-            </div>
-
+                </ul>
+            }
+            else if (signedIn)
+            {
+                <p class="muted">No employee records yet.</p>
+            }
+            else
+            {
+                <p class="muted">Sign in to see recent employee records.</p>
+            }
         </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ==========================================
-     EMPLOYEEHUB FEATURES
-     ========================================== -->
-
-<section class="business-section">
-
-    <div class="business-heading">
-
-        <span>WORKFORCE MANAGEMENT</span>
-
-        <h2>
-            Everything you need to manage your employees
-        </h2>
-
-        <p>
-            Keep important employee information organized and accessible
-            through one professional management system.
-        </p>
-
-    </div>
-
-
-    <div class="row g-4">
-
-        <!-- EMPLOYEE RECORDS -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="business-card">
-
-                <div class="business-card-icon">
-                    👤
-                </div>
-
-                <h3>Employee Records</h3>
-
-                <p>
-                    Maintain employee names, contact information,
-                    departments, positions, salaries and hire dates
-                    in one organized location.
-                </p>
-
-                <a asp-controller="Employees"
-                   asp-action="Index"
-                   class="business-link">
-                    View employees →
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <!-- MANAGEMENT -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="business-card">
-
-                <div class="business-card-icon">
-                    📋
-                </div>
-
-                <h3>Simple Management</h3>
-
-                <p>
-                    Create new employee records, update existing
-                    information, review employee details and remove
-                    outdated records.
-                </p>
-
-                <a asp-controller="Employees"
-                   asp-action="Create"
-                   class="business-link">
-                    Add employee →
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <!-- SEARCH -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="business-card">
-
-                <div class="business-card-icon">
-                    🔎
-                </div>
-
-                <h3>Employee Search</h3>
-
-                <p>
-                    Find employees quickly using their name,
-                    email address, department or position without
-                    searching through records manually.
-                </p>
-
-                <a asp-controller="Employees"
-                   asp-action="Index"
-                   class="business-link">
-                    Search directory →
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ==========================================
-     CALL TO ACTION
-     ========================================== -->
-
-<section class="employee-cta">
-
-    <div>
-
-        <span>EMPLOYEEHUB</span>
-
-        <h2>
-            Build and manage your workforce.
-        </h2>
-
-        <p>
-            Start organizing your employee records today.
-        </p>
-
-    </div>
-
-
-    <div class="employee-cta-buttons">
-
-        <a asp-controller="Employees"
-           asp-action="Create"
-           class="btn btn-light btn-lg">
-            + Add Employee
-        </a>
-
-        <a asp-controller="Employees"
-           asp-action="Index"
-           class="btn btn-outline-light btn-lg">
-            Employee Directory
-        </a>
-
-    </div>
-
+    </aside>
 </section>

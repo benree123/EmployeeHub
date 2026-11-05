@@ -1,9 +1,9 @@
 @{
-    ViewData["Title"] = "Access Denied";
+    ViewData["Title"] = "Access denied";
 }
 
-<div class="employee-empty-state">
-    <h1 class="h3">You don't have access to this page</h1>
-    <p>Your account can view the employee directory, but it can't change records.</p>
-    <a asp-controller="Employees" asp-action="Index" class="btn btn-primary">Back to employees</a>
+<div class="empty-state">
+    <h1>You can't open this page</h1>
+    <p class="muted">Your account can browse the directory, but it can't change records. Ask an administrator if you need more access.</p>
+    <a asp-controller="Employees" asp-action="Index" class="button button-quiet">Go to employees</a>
 </div>

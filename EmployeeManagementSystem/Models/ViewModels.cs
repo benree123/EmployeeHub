@@ -11,10 +11,13 @@ namespace EmployeeManagementSystem.Models
         public int Total { get; init; }
     }
 
+    public record DepartmentCount(string Name, int Employees);
+
     public class HomeViewModel
     {
         public int EmployeeCount { get; init; }
         public int DepartmentCount { get; init; }
         public IReadOnlyList<Employee> Recent { get; init; } = [];
+        public IReadOnlyList<DepartmentCount> Departments { get; init; } = [];
     }
 }

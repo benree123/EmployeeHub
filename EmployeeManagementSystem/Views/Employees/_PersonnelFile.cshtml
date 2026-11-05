@@ -1,0 +1,26 @@
+@model Employee
+@{
+    var culture = System.Globalization.CultureInfo.InvariantCulture;
+}
+
+<article class="personnel-file @DepartmentStyle.ClassFor(Model.Department)">
+    <span class="folder-tab">@Model.Department</span>
+    <div class="folder-body">
+        <header class="file-header">
+            <span class="file-tab large" aria-hidden="true">@DepartmentStyle.Initials(Model)</span>
+            <div>
+                <h2>@Model.FirstName @Model.LastName</h2>
+                <p class="muted">@Model.Position</p>
+            </div>
+        </header>
+        <dl class="file-details">
+            <div><dt>Email</dt><dd><a href="mailto:@Model.Email">@Model.Email</a></dd></div>
+            <div><dt>Hire date</dt><dd>@Model.HireDate.ToString("MMMM d, yyyy", culture)</dd></div>
+            @if (User.CanEdit())
+            {
+                <div><dt>Salary</dt><dd class="numeric-value">@Model.Salary.ToString("$#,##0.00", culture)</dd></div>
+            }
+            <div><dt>Employee number</dt><dd class="numeric-value">@Model.Id</dd></div>
+        </dl>
+    </div>
+</article>
