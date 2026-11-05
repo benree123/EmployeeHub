@@ -139,7 +139,7 @@ namespace EmployeeManagementSystem.Controllers
                 {
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateException) when (await EmailInUse(employee.Email, null))
+                catch (DbUpdateException) when (EmailTaken(employee.Email, null))
                 {
                     // Another request saved the same address first.
                     _context.Entry(employee).State = EntityState.Detached;
@@ -209,7 +209,7 @@ namespace EmployeeManagementSystem.Controllers
 
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateException) when (await EmailInUse(employee.Email, employee.Id))
+                catch (DbUpdateException) when (EmailTaken(employee.Email, employee.Id))
                 {
                     _context.Entry(employee).State = EntityState.Detached;
                     ModelState.AddModelError(nameof(Employee.Email), DuplicateEmail);
@@ -284,6 +284,11 @@ namespace EmployeeManagementSystem.Controllers
         private Task<bool> EmailInUse(string email, int? exceptId)
         {
             return _context.Employees.AsNoTracking().AnyAsync(e => e.Email == email && e.Id != exceptId);
+        }
+
+        private bool EmailTaken(string email, int? exceptId)
+        {
+            return _context.Employees.AsNoTracking().Any(e => e.Email == email && e.Id != exceptId);
         }
 
         private bool EmployeeExists(int id)

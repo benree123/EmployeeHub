@@ -25,3 +25,4 @@ jobs:
           git add EmployeeManagementSystem/Migrations
           git commit -m "Add a migration for the new validation rules"
           git push
+# run
