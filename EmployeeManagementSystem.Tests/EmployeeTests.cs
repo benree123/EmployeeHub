@@ -43,6 +43,7 @@ public class EmployeeTests : IClassFixture<AppFactory>
         Assert.DoesNotContain("john.carter", html);
         Assert.DoesNotContain("Rachel Lee", html);
         Assert.Contains("Sign in to see recent employee records", html);
+        Assert.Contains("Workforce by department", html);
 
         using var scope = _factory.Services.CreateScope();
         var count = await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Employees.CountAsync();
@@ -169,7 +170,7 @@ public class EmployeeTests : IClassFixture<AppFactory>
         var first = await admin.GetStringAsync("/Employees?sort=salary");
         Assert.Contains("Page 1 of", first);
         Assert.Contains(">Next</a>", first);
-        Assert.Equal(10, Regex.Matches(first, "class=\"salary-cell\"").Count);
+        Assert.Equal(10, Regex.Matches(first, "salary-cell\"").Count);
         Assert.Contains("$58,000.00", first);
         Assert.True(first.IndexOf("daniel.wilson@example.com") < first.IndexOf("rachel.lee@example.com"), "Lowest salary should be first.");
 
