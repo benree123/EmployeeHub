@@ -16,6 +16,7 @@ jobs:
         with:
           dotnet-version: '10.0.x'
       - run: dotnet tool install --global dotnet-ef --version '10.0.*'
+      - run: dotnet restore EmployeeManagementSystem/EmployeeManagementSystem.csproj
       - run: dotnet ef migrations add AddValidationRules --project EmployeeManagementSystem
       - run: |
           git config user.name "github-actions[bot]"
