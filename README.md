@@ -14,6 +14,9 @@ The application provides a clean and professional interface for managing employe
 - Store employee data using SQL Server
 - Automatically seed fictional employee data for demonstration
 - Form validation
+- Sign-in with Admin and Viewer roles; Viewers cannot change records or see salaries
+- Paging and sorting in the employee directory
+- Validation for duplicate emails, future hire dates, and field lengths
 - Responsive and professional user interface
 - Employee information including:
   - First and last name
@@ -27,14 +30,14 @@ The application provides a clean and professional interface for managing employe
 
 - C#
 - ASP.NET Core MVC
-- .NET 8
+- .NET 10
 - Entity Framework Core
-- SQL Server / LocalDB
+- SQL Server / LocalDB, with SQLite for the hosted demo and tests
+- xUnit integration tests, GitHub Actions, and Docker
 - Razor Views
 - HTML5
 - CSS3
 - Bootstrap
-- Visual Studio 2022
 - Git & GitHub
 
 ## Application Architecture
@@ -57,8 +60,6 @@ The project also includes fictional employee seed data so the application can be
 
 ## Screenshots
 
-Screenshots of the application interface will be added here.
-
 <img width="955" height="472" alt="image" src="https://github.com/user-attachments/assets/5bb80d79-4ef2-491b-b90c-443f21343452" />
 <img width="945" height="462" alt="image" src="https://github.com/user-attachments/assets/252edee1-2acf-4732-b919-bd343e454c0e" />
 <img width="956" height="476" alt="image" src="https://github.com/user-attachments/assets/2d6072e0-3864-40a9-9a50-38598c9fb807" />
@@ -74,17 +75,19 @@ Screenshots of the application interface will be added here.
 
 To run this project locally, you will need:
 
-- Visual Studio 2022
-- .NET 8 SDK
+- .NET 10 SDK
 - SQL Server LocalDB
 
 ### Installation
 
 1. Clone the repository.
-2. Open the solution in Visual Studio 2022.
-3. Restore NuGet packages.
-4. Verify the database connection string in `appsettings.json`.
-5. Run the application.
+2. Verify the database connection string in `EmployeeManagementSystem/appsettings.json`.
+3. Run `dotnet run --project EmployeeManagementSystem`.
+4. Sign in as `admin` or `viewer`. The first run generates local passwords in `EmployeeManagementSystem/App_Data/local-credentials.txt`, which Git ignores. Set `Auth__AdminPassword` and `Auth__ViewerPassword` to use your own.
+
+Run the tests with `dotnet test`. GitHub Actions runs them against both SQLite and SQL Server.
+
+To run without SQL Server, set `DatabaseProvider=Sqlite`. Set `Demo__Enabled=true` only for a public demo with fictional data: it adds a one-click guest who can edit shared records, and it resets all records every 30 minutes.
 
 The application will apply the existing Entity Framework Core migrations and initialize the database with demonstration employee data when the employee table is empty.
 
@@ -107,10 +110,9 @@ This project was created as a software development portfolio project to demonstr
 
 Potential future improvements include:
 
-- User authentication and authorization
-- Employee dashboard and reporting
+- Reporting
 - Department management
-- Pagination and advanced filtering
+- Advanced filtering
 - REST API integration
 - Cloud deployment
 

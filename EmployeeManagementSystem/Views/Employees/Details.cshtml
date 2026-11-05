@@ -1,4 +1,5 @@
-﻿@model EmployeeManagementSystem.Models.Employee
+@using EmployeeManagementSystem.Security
+@model EmployeeManagementSystem.Models.Employee
 
 @{
     ViewData["Title"] = "Employee Details";
@@ -47,12 +48,15 @@
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-md-6">
-                        <small class="text-muted">Salary</small>
-                        <p class="fw-semibold mb-0">
-                            @Model.Salary.ToString("C")
-                        </p>
-                    </div>
+                    @if (User.CanEdit())
+                    {
+                        <div class="col-md-6">
+                            <small class="text-muted">Salary</small>
+                            <p class="fw-semibold mb-0">
+                                @Model.Salary.ToString("C")
+                            </p>
+                        </div>
+                    }
 
                     <div class="col-md-6">
                         <small class="text-muted">Hire Date</small>
@@ -63,11 +67,14 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <a asp-action="Edit"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-primary">
-                        Edit Employee
-                    </a>
+                    @if (User.CanEdit())
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-primary">
+                            Edit Employee
+                        </a>
+                    }
 
                     <a asp-action="Index"
                        class="btn btn-outline-secondary">
