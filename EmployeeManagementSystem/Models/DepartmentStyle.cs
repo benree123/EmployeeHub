@@ -8,7 +8,7 @@ namespace EmployeeManagementSystem.Models
         public static string ClassFor(string department)
         {
             var total = 0;
-            foreach (var character in department.Trim().ToLowerInvariant()) total = (total * 31 + character) % 9973;
+            foreach (var character in department.Trim().ToLowerInvariant()) total = (total * 49 + character) % 9973;
             return $"dept-{total % Colors}";
         }
 

@@ -21,7 +21,7 @@
 
 <form asp-action="Index" method="get" class="search-bar" role="search">
     <label for="searchString" class="visually-hidden">Search employees</label>
-    <input id="searchString" type="search" name="searchString" value="@Model.Search" class="field" placeholder="Search by name, email, department, or position" />
+    <input id="searchString" type="search" name="searchString" value="@Model.Search" class="field" placeholder="Name, email, department, or position" />
     <button type="submit" class="button button-quiet">Search</button>
     @if (Model.Search != null)
     {
@@ -54,11 +54,13 @@
                 {
                     <tr class="@DepartmentStyle.ClassFor(item.Department)">
                         <td class="person-cell">
-                            <span class="file-tab" aria-hidden="true">@DepartmentStyle.Initials(item)</span>
-                            <span>
-                                <a class="person-name" asp-action="Details" asp-route-id="@item.Id">@item.FirstName @item.LastName</a>
-                                <span class="person-email">@item.Email</span>
-                            </span>
+                            <div class="person">
+                                <span class="file-tab" aria-hidden="true">@DepartmentStyle.Initials(item)</span>
+                                <span>
+                                    <a class="person-name" asp-action="Details" asp-route-id="@item.Id">@item.FirstName @item.LastName</a>
+                                    <span class="person-email">@item.Email</span>
+                                </span>
+                            </div>
                         </td>
                         <td data-label="Department"><span class="department-name">@item.Department</span></td>
                         <td data-label="Position">@item.Position</td>
@@ -66,7 +68,7 @@
                         {
                             <td data-label="Salary" class="numeric salary-cell">@item.Salary.ToString("$#,##0.00", money)</td>
                         }
-                        <td data-label="Hire date">@item.HireDate.ToString("MMM d, yyyy", money)</td>
+                        <td data-label="Hire date" class="hire-date">@item.HireDate.ToString("MMM d, yyyy", money)</td>
                         @if (canEdit)
                         {
                             <td class="row-actions">
