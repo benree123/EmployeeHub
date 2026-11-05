@@ -1,0 +1,43 @@
+name: Build and test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  sqlite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet test --configuration Release
+  sqlserver:
+    runs-on: ubuntu-latest
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: 'Y'
+          MSSQL_SA_PASSWORD: Disposable-ci-Passw0rd
+        ports: ['1433:1433']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Wait for SQL Server
+        run: for attempt in $(seq 1 30); do (echo > /dev/tcp/localhost/1433) 2>/dev/null && break; sleep 2; done; sleep 10
+      - name: Test against SQL Server, including migrations
+        env:
+          TEST_SQLSERVER: Server=localhost,1433;User Id=sa;Password=Disposable-ci-Passw0rd;TrustServerCertificate=True
+        run: dotnet test --configuration Release
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start the demo container
+        run: |
+          docker build -t employeehub .
+          docker run -d --name employeehub -p 5083:8080 -e Demo__Enabled=true employeehub
+          for attempt in $(seq 1 30); do curl -sf http://localhost:5083/ >/dev/null && break; sleep 1; done
+          curl -sf http://localhost:5083/ | grep -q 'Try the demo' || { docker logs employeehub; exit 1; }

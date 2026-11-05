@@ -1,21 +1,32 @@
 using System.Diagnostics;
 using EmployeeManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagementSystem.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // Records appear only after sign-in. Visitors see totals only.
+            return View(new HomeViewModel
+            {
+                EmployeeCount = await _context.Employees.CountAsync(),
+                DepartmentCount = await _context.Employees.Select(e => e.Department).Distinct().CountAsync(),
+                Recent = User.Identity?.IsAuthenticated == true
+                    ? await _context.Employees.OrderByDescending(e => e.Id).Take(3).ToListAsync()
+                    : []
+            });
         }
 
         public IActionResult Privacy()

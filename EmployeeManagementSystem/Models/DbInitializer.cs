@@ -5,6 +5,13 @@ namespace EmployeeManagementSystem.Models
 {
     public static class DbInitializer
     {
+        public static void Reset(ApplicationDbContext context)
+        {
+            context.Employees.RemoveRange(context.Employees);
+            context.SaveChanges();
+            Initialize(context);
+        }
+
         public static void Initialize(ApplicationDbContext context)
         {
             // Do not add demo employees if employees already exist.

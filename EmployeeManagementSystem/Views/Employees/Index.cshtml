@@ -1,7 +1,11 @@
-﻿@model IEnumerable<EmployeeManagementSystem.Models.Employee>
+@using EmployeeManagementSystem.Security
+@model EmployeeManagementSystem.Models.EmployeeListViewModel
 
 @{
     ViewData["Title"] = "Employees";
+    var canEdit = User.CanEdit();
+    bool NextDescending(string key) => Model.Sort == key && !Model.Descending;
+    string Arrow(string key) => Model.Sort != key ? "" : Model.Descending ? " ↓" : " ↑";
 }
 
 <div class="employees-page">
@@ -19,12 +23,15 @@
             </p>
         </div>
 
-        <div>
-            <a asp-action="Create"
-               class="btn btn-primary">
-                + Add Employee
-            </a>
-        </div>
+        @if (canEdit)
+        {
+            <div>
+                <a asp-action="Create"
+                   class="btn btn-primary">
+                    + Add Employee
+                </a>
+            </div>
+        }
 
     </div>
 
@@ -42,7 +49,7 @@
 
                 <input type="text"
                        name="searchString"
-                       value="@ViewData["CurrentFilter"]"
+                       value="@Model.Search"
                        class="form-control"
                        placeholder="Search by name, email, department or position..." />
 
@@ -53,7 +60,7 @@
                 Search
             </button>
 
-            @if (ViewData["CurrentFilter"] != null)
+            @if (Model.Search != null)
             {
                 <a asp-action="Index"
                    class="btn btn-outline-secondary">
@@ -66,7 +73,7 @@
     </div>
 
 
-    @if (Model != null && Model.Any())
+    @if (Model.Items.Any())
     {
         <!-- EMPLOYEE TABLE -->
         <div class="employee-table-card">
@@ -77,19 +84,22 @@
 
                     <thead>
                         <tr>
-                            <th>Employee</th>
+                            <th><a class="text-reset text-decoration-none" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="name" asp-route-desc="@NextDescending("name")">Employee@Arrow("name")</a></th>
                             <th>Email</th>
-                            <th>Department</th>
-                            <th>Position</th>
-                            <th>Salary</th>
-                            <th>Hire Date</th>
+                            <th><a class="text-reset text-decoration-none" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="department" asp-route-desc="@NextDescending("department")">Department@Arrow("department")</a></th>
+                            <th><a class="text-reset text-decoration-none" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="position" asp-route-desc="@NextDescending("position")">Position@Arrow("position")</a></th>
+                            @if (canEdit)
+                            {
+                                <th><a class="text-reset text-decoration-none" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="salary" asp-route-desc="@NextDescending("salary")">Salary@Arrow("salary")</a></th>
+                            }
+                            <th><a class="text-reset text-decoration-none" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="hired" asp-route-desc="@NextDescending("hired")">Hire Date@Arrow("hired")</a></th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Items)
                         {
                             var initials =
                             $"{item.FirstName?.FirstOrDefault()}{item.LastName?.FirstOrDefault()}";
@@ -139,9 +149,12 @@
 
 
                                 <!-- SALARY -->
-                                <td class="salary-cell">
-                                    @item.Salary.ToString("C")
-                                </td>
+                                @if (canEdit)
+                                {
+                                    <td class="salary-cell">
+                                        @item.Salary.ToString("C")
+                                    </td>
+                                }
 
 
                                 <!-- HIRE DATE -->
@@ -161,6 +174,8 @@
                                             View
                                         </a>
 
+                                        @if (canEdit)
+                                        {
                                         <a asp-action="Edit"
                                            asp-route-id="@item.Id"
                                            class="btn btn-sm btn-outline-primary">
@@ -172,6 +187,7 @@
                                            class="btn btn-sm btn-outline-danger">
                                             Delete
                                         </a>
+                                        }
 
                                     </div>
 
@@ -184,6 +200,20 @@
 
                 </table>
 
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <span class="text-muted">@Model.Total employee(s) · Page @Model.Page of @Model.TotalPages</span>
+                <div class="d-flex gap-2">
+                    @if (Model.Page > 1)
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="@Model.Sort" asp-route-desc="@Model.Descending" asp-route-page="@(Model.Page - 1)">Previous</a>
+                    }
+                    @if (Model.Page < Model.TotalPages)
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="@Model.Sort" asp-route-desc="@Model.Descending" asp-route-page="@(Model.Page + 1)">Next</a>
+                    }
+                </div>
             </div>
 
         </div>
@@ -199,7 +229,7 @@
 
             <h3>No employees found</h3>
 
-            @if (ViewData["CurrentFilter"] != null)
+            @if (Model.Search != null)
             {
                 <p>
                     No employees match your search.
@@ -215,14 +245,16 @@
             {
                 <p>
                     Your employee directory is currently empty.
-                    Add your first employee to get started.
                 </p>
             }
 
-            <a asp-action="Create"
-               class="btn btn-primary">
-                + Add Employee
-            </a>
+            @if (canEdit)
+            {
+                <a asp-action="Create"
+                   class="btn btn-primary">
+                    + Add Employee
+                </a>
+            }
 
         </div>
     }

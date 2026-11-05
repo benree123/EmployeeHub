@@ -1,0 +1,26 @@
+name: Temporary migration generator
+on:
+  push:
+    branches: [upgrade-and-demo]
+    paths: [.github/workflows/temp-add-migration.yml]
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: upgrade-and-demo
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet tool install --global dotnet-ef --version '10.0.*'
+      - run: dotnet ef migrations add AddValidationRules --project EmployeeManagementSystem
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/temp-add-migration.yml
+          git add EmployeeManagementSystem/Migrations
+          git commit -m "Add a migration for the new validation rules"
+          git push
