@@ -126,8 +126,8 @@ public class EmployeeTests : IClassFixture<AppFactory>
     public async Task Saving_an_employee_with_their_own_email_is_allowed()
     {
         var admin = await Admin();
-        var id = await IdOf("emily.davis@example.com");
-        var response = await admin.Submit($"/Employees/Edit/{id}", $"/Employees/Edit/{id}", Helpers.Employee("emily.davis@example.com", id: id.ToString()));
+        var id = await IdOf("david.clark@example.com");
+        var response = await admin.Submit($"/Employees/Edit/{id}", $"/Employees/Edit/{id}", Helpers.Employee("david.clark@example.com", id: id.ToString()));
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
     }
 
