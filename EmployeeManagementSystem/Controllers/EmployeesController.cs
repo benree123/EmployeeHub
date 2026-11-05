@@ -49,6 +49,8 @@ namespace EmployeeManagementSystem.Controllers
 
             employees = (sort, desc) switch
             {
+                ("id", false) => employees.OrderBy(e => e.Id),
+                ("id", true) => employees.OrderByDescending(e => e.Id),
                 ("name", false) => employees.OrderBy(e => e.LastName).ThenBy(e => e.FirstName),
                 ("name", true) => employees.OrderByDescending(e => e.LastName).ThenByDescending(e => e.FirstName),
                 ("department", false) => employees.OrderBy(e => e.Department).ThenBy(e => e.LastName),

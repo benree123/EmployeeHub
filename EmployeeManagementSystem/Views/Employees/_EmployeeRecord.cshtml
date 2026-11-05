@@ -1,0 +1,23 @@
+@model Employee
+@{
+    var culture = System.Globalization.CultureInfo.InvariantCulture;
+}
+
+<div class="grid-wrap">
+    <table class="record-grid">
+        <caption class="visually-hidden">Employee record</caption>
+        <tbody>
+            <tr><th scope="row">Employee ID</th><td>@Model.Id.ToString("D4")</td></tr>
+            <tr><th scope="row">First name</th><td>@Model.FirstName</td></tr>
+            <tr><th scope="row">Last name</th><td>@Model.LastName</td></tr>
+            <tr><th scope="row">Email</th><td><a href="mailto:@Model.Email">@Model.Email</a></td></tr>
+            <tr><th scope="row">Department</th><td>@Model.Department</td></tr>
+            <tr><th scope="row">Position</th><td>@Model.Position</td></tr>
+            @if (User.CanEdit())
+            {
+                <tr><th scope="row">Salary</th><td>@Model.Salary.ToString("$#,##0.00", culture)</td></tr>
+            }
+            <tr><th scope="row">Hire date</th><td>@Model.HireDate.ToString("MMMM d, yyyy", culture)</td></tr>
+        </tbody>
+    </table>
+</div>

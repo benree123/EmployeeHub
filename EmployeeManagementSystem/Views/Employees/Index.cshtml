@@ -31,11 +31,13 @@
 
 @if (Model.Items.Any())
 {
-    <div class="roster-wrap">
-        <table class="roster">
+    <div class="grid-wrap">
+        <table class="data-grid">
             <thead>
                 <tr>
-                    <th scope="col" aria-sort="@SortState("name")"><a asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="name" asp-route-desc="@NextDescending("name")">Employee@(Arrow("name"))</a></th>
+                    <th scope="col" class="numeric" aria-sort="@SortState("id")"><a asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="id" asp-route-desc="@(Model.Sort == "id" ? !Model.Descending : true)">Employee ID@(Arrow("id"))</a></th>
+                    <th scope="col" aria-sort="@SortState("name")"><a asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="name" asp-route-desc="@NextDescending("name")">Name@(Arrow("name"))</a></th>
+                    <th scope="col">Email</th>
                     <th scope="col" aria-sort="@SortState("department")"><a asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="department" asp-route-desc="@NextDescending("department")">Department@(Arrow("department"))</a></th>
                     <th scope="col" aria-sort="@SortState("position")"><a asp-action="Index" asp-route-searchString="@Model.Search" asp-route-sort="position" asp-route-desc="@NextDescending("position")">Position@(Arrow("position"))</a></th>
                     @if (canEdit)
@@ -52,17 +54,11 @@
             <tbody>
                 @foreach (var item in Model.Items)
                 {
-                    <tr class="@DepartmentStyle.ClassFor(item.Department)">
-                        <td class="person-cell">
-                            <div class="person">
-                                <span class="file-tab" aria-hidden="true">@DepartmentStyle.Initials(item)</span>
-                                <span>
-                                    <a class="person-name" asp-action="Details" asp-route-id="@item.Id">@item.FirstName @item.LastName</a>
-                                    <span class="person-email">@item.Email</span>
-                                </span>
-                            </div>
-                        </td>
-                        <td data-label="Department"><span class="department-name">@item.Department</span></td>
+                    <tr>
+                        <td data-label="Employee ID" class="numeric id-cell">@item.Id.ToString("D4")</td>
+                        <td data-label="Name" class="name-cell"><a class="person-name" asp-action="Details" asp-route-id="@item.Id">@item.LastName, @item.FirstName</a></td>
+                        <td data-label="Email" class="email-cell">@item.Email</td>
+                        <td data-label="Department">@item.Department</td>
                         <td data-label="Position">@item.Position</td>
                         @if (canEdit)
                         {

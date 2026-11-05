@@ -5,8 +5,9 @@
 
 <div class="narrow">
     <a class="back-link" asp-action="Index">Back to employees</a>
-    <h1 class="visually-hidden">Employee details</h1>
-    <partial name="_PersonnelFile" model="Model" />
+    <h1>@Model.FirstName @Model.LastName</h1>
+    <p class="muted delete-note">@Model.Position</p>
+    <partial name="_EmployeeRecord" model="Model" />
 
     @if (User.CanEdit())
     {
