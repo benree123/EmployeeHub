@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagementSystem.Models
@@ -10,12 +10,12 @@ namespace EmployeeManagementSystem.Models
 
         [Required]
         [StringLength(100)]
-        [Display(Name = "First Name")]
+        [Display(Name = "First name")]
         public string FirstName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last name")]
         public string LastName { get; set; } = string.Empty;
 
         [Required]
@@ -35,7 +35,7 @@ namespace EmployeeManagementSystem.Models
         [Precision(18, 2)]
         public decimal Salary { get; set; }
 
-        [Display(Name = "Hire Date")]
+        [Display(Name = "Hire date")]
         [DataType(DataType.Date)]
         [NotInFuture]
         public DateTime HireDate { get; set; }
